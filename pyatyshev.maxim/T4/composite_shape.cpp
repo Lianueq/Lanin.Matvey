@@ -1,85 +1,65 @@
 #include "composite_shape.h"
-#include <algorithm>
-#include <limits>
 
-CompositeShape::CompositeShape() : shapes_()
+CompositeShape::CompositeShape()
 {
 }
 
-void CompositeShape::addShape(std::unique_ptr<Shape> shape)
+void CompositeShape::addShape(std::shared_ptr<Shape> shape)
 {
-  shapes_.push_back(std::move(shape));
+    shapes_.push_back(shape);
 }
 
 double CompositeShape::getArea() const
 {
-  double area = 0;
-  for (const auto& shape : shapes_)
-  {
-    area += shape->getArea();
-  }
-  return area;
+    double totalArea = 0.0;
+    for (const auto& shape : shapes_)
+    {
+        totalArea += shape->getArea();
+    }
+    return totalArea;
 }
 
 Point CompositeShape::getCenter() const
 {
-  if (shapes_.empty())
-  {
-    return Point();
-  }
+    if (shapes_.empty())
+    {
+        return Point(0, 0);
+    }
 
-  double minX = std::numeric_limits<double>::max();
-  double maxX = std::numeric_limits<double>::lowest();
-  double minY = std::numeric_limits<double>::max();
-  double maxY = std::numeric_limits<double>::lowest();
+    double totalArea = 0.0;
+    double centerX = 0.0;
+    double centerY = 0.0;
 
-  for (const auto& shape : shapes_)
-  {
-    Point center = shape->getCenter();
-    double area = shape->getArea();
-    double size = std::sqrt(area);
+    for (const auto& shape : shapes_)
+    {
+        double area = shape->getArea();
+        Point center = shape->getCenter();
 
-    minX = std::min(minX, center.x - size);
-    maxX = std::max(maxX, center.x + size);
-    minY = std::min(minY, center.y - size);
-    maxY = std::max(maxY, center.y + size);
-  }
+        totalArea += area;
+        centerX += center.x * area;
+        centerY += center.y * area;
+    }
 
-  return Point((minX + maxX) / 2, (minY + maxY) / 2);
+    return Point(centerX / totalArea, centerY / totalArea);
 }
 
 void CompositeShape::move(double dx, double dy)
 {
-  for (auto& shape : shapes_)
-  {
-    shape->move(dx, dy);
-  }
+    for (auto& shape : shapes_)
+    {
+        shape->move(dx, dy);
+    }
 }
 
 void CompositeShape::scale(double factor)
 {
-  Point center = getCenter();
-  for (auto& shape : shapes_)
-  {
-    Point shapeCenter = shape->getCenter();
-    double dx = (shapeCenter.x - center.x) * factor - (shapeCenter.x - center.x);
-    double dy = (shapeCenter.y - center.y) * factor - (shapeCenter.y - center.y);
-    shape->move(dx, dy);
-    shape->scale(factor);
-  }
+    for (auto& shape : shapes_)
+    {
+        shape->scale(factor);
+    }
 }
 
 std::string CompositeShape::getName() const
 {
-  return "COMPOSITE";
-}
-
-size_t CompositeShape::getSize() const
-{
-  return shapes_.size();
-}
-
-const std::unique_ptr<Shape>& CompositeShape::getShape(size_t index) const
-{
-  return shapes_[index];
+    return "COMPOSITE_SHAPE";
 }

@@ -3,10 +3,10 @@
 
 struct Point
 {
-  double x;
-  double y;
+    double x;
+    double y;
 
-  Point(double xVal = 0, double yVal = 0) : x(xVal), y(yVal) {}
+    Point(double xVal = 0, double yVal = 0) : x(xVal), y(yVal) {}
 };
 
 #endif

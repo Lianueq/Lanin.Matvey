@@ -1,82 +1,56 @@
-#include <iostream>
-#include <iomanip>
-#include <memory>
-#include <vector>
 #include "rectangle.h"
 #include "isosceles_trapezoid.h"
 #include "composite_shape.h"
-
-void printShape(const Shape& shape)
-{
-  Point center = shape.getCenter();
-  std::cout << "[" << shape.getName() << ",("
-            << std::fixed << std::setprecision(2)
-            << center.x << ", " << center.y << "), "
-            << shape.getArea() << "]";
-}
-
-void printCompositeShape(const CompositeShape& composite)
-{
-  Point center = composite.getCenter();
-  std::cout << "[" << composite.getName() << ",("
-            << std::fixed << std::setprecision(2)
-            << center.x << ", " << center.y << "), "
-            << composite.getArea() << ": ";
-
-  for (size_t i = 0; i < composite.getSize(); ++i)
-  {
-    if (i > 0)
-    {
-      std::cout << ", ";
-    }
-    printShape(*composite.getShape(i));
-  }
-  std::cout << "]";
-}
+#include <iostream>
+#include <memory>
+#include <iomanip>
 
 int main()
 {
-  std::vector<std::unique_ptr<Shape>> shapes;
+    std::cout << std::fixed << std::setprecision(2);
 
-  shapes.push_back(std::make_unique<Rectangle>(Point(0, 0), Point(4, 3)));
-  shapes.push_back(std::make_unique<IsoscelesTrapezoid>(Point(5, 0), 6, 4, 3));
-  shapes.push_back(std::make_unique<Rectangle>(Point(10, 5), Point(15, 9)));
+  
+    Rectangle rect(Point(0, 0), Point(4, 3));
+    std::cout << "Rectangle: " << rect.getName() << std::endl;
+    std::cout << "Area: " << rect.getArea() << std::endl;
+    std::cout << "Center: (" << rect.getCenter().x << ", "
+              << rect.getCenter().y << ")" << std::endl;
 
-  auto composite = std::make_unique<CompositeShape>();
-  composite->addShape(std::make_unique<Rectangle>(Point(0, 0), Point(2, 2)));
-  composite->addShape(std::make_unique<IsoscelesTrapezoid>(Point(3, 0), 3, 2, 2));
-  shapes.push_back(std::move(composite));
+    rect.move(1, 1);
+    std::cout << "After move: Center: (" << rect.getCenter().x << ", "
+              << rect.getCenter().y << ")" << std::endl;
 
-  shapes.push_back(std::make_unique<IsoscelesTrapezoid>(Point(20, 10), 8, 5, 4));
+    rect.scale(2);
+    std::cout << "After scale: Area: " << rect.getArea() << std::endl;
 
-  std::cout << "Before scaling:\n";
-  for (const auto& shape : shapes)
-  {
-    if (shape->getName() == "COMPOSITE")
-    {
-      printCompositeShape(dynamic_cast<const CompositeShape&>(*shape));
-    }
-    else
-    {
-      printShape(*shape);
-    }
-    std::cout << "\n";
-  }
+    std::cout << std::endl;
 
-  std::cout << "\nAfter scaling by factor 2:\n";
-  for (auto& shape : shapes)
-  {
-    shape->scale(2);
-    if (shape->getName() == "COMPOSITE")
-    {
-      printCompositeShape(dynamic_cast<const CompositeShape&>(*shape));
-    }
-    else
-    {
-      printShape(*shape);
-    }
-    std::cout << "\n";
-  }
 
-  return 0;
+    IsoscelesTrapezoid trap(Point(0, 0), Point(6, 0),
+                            Point(1, 4), Point(5, 4));
+    std::cout << "Isosceles Trapezoid: " << trap.getName() << std::endl;
+    std::cout << "Area: " << trap.getArea() << std::endl;
+    std::cout << "Center: (" << trap.getCenter().x << ", "
+              << trap.getCenter().y << ")" << std::endl;
+
+    trap.move(2, 2);
+    std::cout << "After move: Center: (" << trap.getCenter().x << ", "
+              << trap.getCenter().y << ")" << std::endl;
+
+    trap.scale(1.5);
+    std::cout << "After scale: Area: " << trap.getArea() << std::endl;
+
+    std::cout << std::endl;
+
+    CompositeShape composite;
+    composite.addShape(std::make_shared<Rectangle>(Point(0, 0), Point(2, 2)));
+    composite.addShape(std::make_shared<IsoscelesTrapezoid>(
+        Point(3, 0), Point(7, 0), Point(4, 3), Point(6, 3)));
+
+    std::cout << "Composite Shape: " << composite.getName() << std::endl;
+    std::cout << "Total Area: " << composite.getArea() << std::endl;
+    std::cout << "Center: (" << composite.getCenter().x << ", "
+              << composite.getCenter().y << ")" << std::endl;
+
+    return 0;
 }

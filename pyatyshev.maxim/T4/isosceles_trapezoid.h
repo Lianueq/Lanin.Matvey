@@ -5,20 +5,20 @@
 
 class IsoscelesTrapezoid : public Shape
 {
-public:
-  IsoscelesTrapezoid(Point bottomLeft, double bottomBase,
-                     double topBase, double height);
-  double getArea() const override;
-  Point getCenter() const override;
-  void move(double dx, double dy) override;
-  void scale(double factor) override;
-  std::string getName() const override;
-
 private:
-  Point bottomLeft_;
-  double bottomBase_;
-  double topBase_;
-  double height_;
+    Point bottomLeft_;
+    Point bottomRight_;
+    Point topLeft_;
+    Point topRight_;
+
+public:
+    IsoscelesTrapezoid(Point bottomLeft, Point bottomRight,
+                       Point topLeft, Point topRight);
+    double getArea() const override;
+    Point getCenter() const override;
+    void move(double dx, double dy) override;
+    void scale(double factor) override;
+    std::string getName() const override;
 };
 
 #endif
