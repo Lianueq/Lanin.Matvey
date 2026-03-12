@@ -16,7 +16,7 @@ double IsoscelesTrapezoid::getArea() const
 
 Point IsoscelesTrapezoid::getCenter() const
 {
-    double centerX = bottomLeft_.x + (bottomBase_ + topBase_) / 4.0;
+    double centerX = bottomLeft_.x + bottomBase_ / 2.0;
     double centerY = bottomLeft_.y + height_ / 2.0;
     return Point(centerX, centerY);
 }
@@ -44,12 +44,14 @@ std::string IsoscelesTrapezoid::getName() const
 
 double IsoscelesTrapezoid::getLeft() const
 {
-    return bottomLeft_.x;
+    double offset = (bottomBase_ - topBase_) / 2.0;
+    return bottomLeft_.x + std::min(0.0, offset);
 }
 
 double IsoscelesTrapezoid::getRight() const
 {
-    return bottomLeft_.x + std::max(bottomBase_, topBase_);
+    double offset = (bottomBase_ - topBase_) / 2.0;
+    return bottomLeft_.x + bottomBase_ + std::max(0.0, offset);
 }
 
 double IsoscelesTrapezoid::getBottom() const
