@@ -9,7 +9,6 @@ int main()
 {
     std::cout << std::fixed << std::setprecision(2);
 
-  
     Rectangle rect(Point(0, 0), Point(4, 3));
     std::cout << "Rectangle: " << rect.getName() << std::endl;
     std::cout << "Area: " << rect.getArea() << std::endl;
@@ -24,7 +23,6 @@ int main()
     std::cout << "After scale: Area: " << rect.getArea() << std::endl;
 
     std::cout << std::endl;
-
 
     IsoscelesTrapezoid trap(Point(0, 0), Point(6, 0),
                             Point(1, 4), Point(5, 4));
