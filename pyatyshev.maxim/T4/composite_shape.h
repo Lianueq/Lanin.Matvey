@@ -4,6 +4,7 @@
 #include "shape.h"
 #include <vector>
 #include <memory>
+#include <string>
 
 class CompositeShape : public Shape
 {
@@ -18,6 +19,7 @@ public:
     void move(double dx, double dy) override;
     void scale(double factor) override;
     std::string getName() const override;
+    std::string getDetails() const;
 };
 
 #endif

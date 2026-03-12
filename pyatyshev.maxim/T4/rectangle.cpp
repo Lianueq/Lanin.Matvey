@@ -39,3 +39,23 @@ std::string Rectangle::getName() const
 {
     return "RECTANGLE";
 }
+
+double Rectangle::getLeft() const
+{
+    return bottomLeft_.x;
+}
+
+double Rectangle::getRight() const
+{
+    return topRight_.x;
+}
+
+double Rectangle::getBottom() const
+{
+    return bottomLeft_.y;
+}
+
+double Rectangle::getTop() const
+{
+    return topRight_.y;
+}
