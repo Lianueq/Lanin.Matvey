@@ -43,21 +43,20 @@ static void printShape(std::shared_ptr<Shape> shape) {
 
 int main()
 {
-	std::vector<std::shared_ptr<Shape>> shapes;
-
-	auto rect1 = std::make_shared<Rectangle>(Point(0, 0), Point(4, 3));
+    std::vector<std::shared_ptr<Shape>> shapes;
+    auto rect1 = std::make_shared<Rectangle>(Point(0, 0), Point(4, 3));
     shapes.push_back(rect1);
-
-	auto rect2 = std::make_shared<Rectangle>(Point(5, 5), Point(9, 8));
+    
+    auto rect2 = std::make_shared<Rectangle>(Point(5, 5), Point(9, 8));
     shapes.push_back(rect2);
-
-	auto rhombus1 = std::make_shared<Rhombus>(Point(10, 10), 6, 8);
+    
+    auto rhombus1 = std::make_shared<Rhombus>(Point(10, 10), 6, 8);
     shapes.push_back(rhombus1);
-
-	auto rhombus2 = std::make_shared<Rhombus>(Point(2, 8), 4, 5);
+    
+    auto rhombus2 = std::make_shared<Rhombus>(Point(2, 8), 4, 5);
     shapes.push_back(rhombus2);
-
-	auto composite = std::make_shared<CompositeShape>();
+    
+    auto composite = std::make_shared<CompositeShape>();
     composite->addShape(rect1);
     composite->addShape(rhombus1);
     shapes.push_back(composite);
