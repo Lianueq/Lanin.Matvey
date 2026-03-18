@@ -20,7 +20,7 @@ static void printShape(std::shared_ptr<Shape> shape){
 
         std::cout << "[CompositeShape,(" << center.x << "," << center.y << "),"<< area << ":\n";
 
-        for (size_t i = 0;i < composite->getShapesCount();++i)
+        for (size_t i = 0; i < composite->getShapesCount(); ++i)
         {
             std::shared_ptr<Shape> s = composite->getShape(i);
             Point c = s->getCenter();
@@ -46,16 +46,16 @@ int main()
     std::vector<std::shared_ptr<Shape>> shapes;
     auto rect1 = std::make_shared<Rectangle>(Point(0, 0), Point(4, 3));
     shapes.push_back(rect1);
-    
+
     auto rect2 = std::make_shared<Rectangle>(Point(5, 5), Point(9, 8));
     shapes.push_back(rect2);
-    
+
     auto rhombus1 = std::make_shared<Rhombus>(Point(10, 10), 6, 8);
     shapes.push_back(rhombus1);
-    
+
     auto rhombus2 = std::make_shared<Rhombus>(Point(2, 8), 4, 5);
     shapes.push_back(rhombus2);
-    
+
     auto composite = std::make_shared<CompositeShape>();
     composite->addShape(rect1);
     composite->addShape(rhombus1);
