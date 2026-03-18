@@ -2,23 +2,23 @@
 #include <cmath>
 
 
-CompositeShape::CompositeShape() : shapes() {
+CompositeShape::CompositeShape(): shapes(){
 }
 
-void CompositeShape::addShape(std::shared_ptr<Shape> shape) {
+void CompositeShape::addShape(std::shared_ptr<Shape> shape){
     shapes.push_back(shape);
 }
 
-float CompositeShape::getArea() const {
+float CompositeShape::getArea()const {
     float totalArea = 0.0;
-    for (const auto& shape : shapes) {
+    for (const auto& shape : shapes){
         totalArea += shape->getArea();
     }
     return totalArea;
 }
 
-Point CompositeShape::getCenter() const {
-    if (shapes.empty()) {
+Point CompositeShape::getCenter()const {
+    if (shapes.empty()){
         return Point(0, 0);
     }
 
@@ -27,7 +27,7 @@ Point CompositeShape::getCenter() const {
     float maxX = std::numeric_limits<float>::lowest();
     float maxY = std::numeric_limits<float>::lowest();
 
-    for (const auto& shape : shapes) {
+    for (const auto& shape : shapes){
         Point center = shape->getCenter();
         float area = shape->getArea();
         float size = std::sqrt(area);
@@ -38,29 +38,29 @@ Point CompositeShape::getCenter() const {
         maxY = std::max(maxY, center.y + size);
     }
 
-    return Point((minX + maxX) / 2.0, (minY + maxY) / 2.0);
+    return Point((minX + maxX)/ 2.0, (minY + maxY)/ 2.0);
 }
 
-void CompositeShape::move(float dx, float dy) {
-    for (auto& shape : shapes) {
+void CompositeShape::move(float dx, float dy){
+    for (auto& shape : shapes){
         shape->move(dx, dy);
     }
 }
 
-void CompositeShape::scale(float coefficient) {
+void CompositeShape::scale(float coefficient){
     Point compositeCenter = getCenter();
 
-    for (auto& shape : shapes) {
+    for (auto& shape : shapes){
         Point shapeCenter = shape->getCenter();
 
-        float dx = (shapeCenter.x - compositeCenter.x) * coefficient;
-        float dy = (shapeCenter.y - compositeCenter.y) * coefficient;
+        float dx = (shapeCenter.x - compositeCenter.x)* coefficient;
+        float dy = (shapeCenter.y - compositeCenter.y)* coefficient;
 
         shape->move(dx, dy);
         shape->scale(coefficient);
     }
 }
 
-const char* CompositeShape::getName() const {
+const char* CompositeShape::getName()const {
     return "CompositeShape";
 }

@@ -9,10 +9,10 @@
 
 
 
-static void printShape(std::shared_ptr<Shape> shape) {
+static void printShape(std::shared_ptr<Shape> shape){
     std::cout << std::fixed << std::setprecision(2);
 
-    if (shape->getName() == std::string("CompositeShape")) 
+    if (shape->getName()== std::string("CompositeShape"))
     {
         std::shared_ptr<CompositeShape> composite = std::dynamic_pointer_cast<CompositeShape>(shape);
         Point center = composite->getCenter();
@@ -20,24 +20,24 @@ static void printShape(std::shared_ptr<Shape> shape) {
 
         std::cout << "[CompositeShape,(" << center.x << "," << center.y << "),"<< area << ":\n";
 
-        for (size_t i = 0; i < composite->getShapesCount(); ++i) 
+        for (size_t i = 0;i < composite->getShapesCount();++i)
         {
             std::shared_ptr<Shape> s = composite->getShape(i);
             Point c = s->getCenter();
             double a = s->getArea();
-            std::cout << " " << s->getName() << ",(" << c.x << ", " << c.y<< ")," << a;
-            if (i < composite->getShapesCount() - 1) 
+            std::cout << " " << s->getName()<< ",(" << c.x << ", " << c.y<< ")," << a;
+            if (i < composite->getShapesCount()- 1)
             {
                 std::cout << ",\n";
             }
         }
         std::cout << "\n]" << std::endl;
     }
-    else 
+    else
     {
         Point center = shape->getCenter();
         double area = shape->getArea();
-        std::cout << "[" << shape->getName() << ",(" << center.x << ","<< center.y << ")," << area << "]" << std::endl;
+        std::cout << "[" << shape->getName()<< ",(" << center.x << ","<< center.y << ")," << area << "]" << std::endl;
     }
 }
 
