@@ -23,10 +23,12 @@ int main()
 
     std::unique_ptr<CompositeShape> composite = std::make_unique<CompositeShape>();
 
-    std::unique_ptr<Rectangle> rect1 = std::make_unique<Rectangle>(Point(0.0, 0.0), Point(2.0, 3.0));
+    std::unique_ptr<Rectangle> rect1 = std::make_unique<Rectangle>(Point(0.0, 0.0),
+                                                                   Point(2.0, 3.0));
     composite->addShape(std::move(rect1));
 
-    std::unique_ptr<IsoscelesTrapezoid> trap1 = std::make_unique<IsoscelesTrapezoid>(Point(3.0, 1.0), 4.0, 2.0, 2.0);
+    std::unique_ptr<IsoscelesTrapezoid> trap1 = std::make_unique<IsoscelesTrapezoid>(
+    Point(3.0, 1.0), 4.0, 2.0, 2.0);
     composite->addShape(std::move(trap1));
 
     shapes.push_back(std::move(composite));

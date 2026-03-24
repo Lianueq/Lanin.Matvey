@@ -1,7 +1,7 @@
 #ifndef POINT_H
 #define POINT_H
 
-class Point 
+class Point
 {
   public:
 
@@ -15,22 +15,22 @@ class Point
       y_(y)
     {}
 
-    double getX() const 
+    double getX() const
     {
       return x_;
     }
 
-    void setX(double x) 
+    void setX(double x)
     {
       x_ = x;
     }
 
-    double getY() const 
+    double getY() const
     {
       return y_;
     }
 
-    void setY(double y) 
+    void setY(double y)
     {
       y_ = y;
     }

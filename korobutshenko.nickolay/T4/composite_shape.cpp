@@ -114,9 +114,9 @@ void CompositeShape::print() const
 {
   Point center = getCenter();
   size_t size = getSize();
-  std::cout << "[" << getName() << ", ("  
-            << std::fixed << std::setprecision(2) << center.getX()  
-            << ", " << std::setprecision(2) << center.getY() << "), "  
+  std::cout << "[" << getName() << ", ("
+            << std::fixed << std::setprecision(2) << center.getX()
+            << ", " << std::setprecision(2) << center.getY() << "), "
             << std::setprecision(2) << getArea() << ":\n";
   for (size_t i = 0; i < size; ++i)
   {

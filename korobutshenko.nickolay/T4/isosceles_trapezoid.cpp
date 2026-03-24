@@ -1,6 +1,6 @@
 #include "isosceles_trapezoid.h"
 
-IsoscelesTrapezoid::IsoscelesTrapezoid(const Point& leftBottom, double lengthBottom,  
+IsoscelesTrapezoid::IsoscelesTrapezoid(const Point& leftBottom, double lengthBottom,
                                        double lengthTop, double height) :
   leftBottom_(leftBottom),
   lengthBottom_(lengthBottom),
@@ -44,13 +44,13 @@ Point IsoscelesTrapezoid::getCenter() const
   Point leftTop = getLeftTop();
   Point rightTop = getRightTop();
 
-  Point leftMid((leftBottom_.getX() + leftTop.getX()) / 2.0,  
+  Point leftMid((leftBottom_.getX() + leftTop.getX()) / 2.0,
                 (leftBottom_.getY() + leftTop.getY()) / 2.0);
 
   Point rightMid((rightBottom.getX() + rightTop.getX()) / 2.0,
                  (rightBottom.getY() + rightTop.getY()) / 2.0);
 
-  Point center((leftMid.getX() + rightMid.getX()) / 2.0,  
+  Point center((leftMid.getX() + rightMid.getX()) / 2.0,
                (leftMid.getY() + rightMid.getY()) / 2.0);
 
   return center;
@@ -68,7 +68,7 @@ void IsoscelesTrapezoid::scale(double scale)
   {
     throw std::invalid_argument("incorrect scale value");
   }
-  
+
   Point center = getCenter();
 
   double leftBottomX = center.getX() + (leftBottom_.getX() - center.getX()) * scale;
@@ -93,7 +93,7 @@ void IsoscelesTrapezoid::getBoundingBox(double& minX, double& minY,
   Point leftTop = getLeftTop();
   Point rightBottom = getRightBottom();
   Point rightTop = getRightTop();
-  minX = leftBottom_.getX() < leftTop.getX() ? leftBottom_.getX() : leftTop.getX()  ;
+  minX = leftBottom_.getX() < leftTop.getX() ? leftBottom_.getX() : leftTop.getX();
   maxX = rightBottom.getX() > rightTop.getX() ? rightBottom.getX() : rightTop.getX();
   minY = leftBottom_.getY();
   maxY = leftTop.getY();
@@ -102,8 +102,8 @@ void IsoscelesTrapezoid::getBoundingBox(double& minX, double& minY,
 void IsoscelesTrapezoid::print() const
 {
   Point center = getCenter();
-  std::cout << "[" << getName() << ", ("  
-            << std::fixed << std::setprecision(2) << center.getX()  
-            << ", " << std::setprecision(2) << center.getY() << "), "  
+  std::cout << "[" << getName() << ", ("
+            << std::fixed << std::setprecision(2) << center.getX()
+            << ", " << std::setprecision(2) << center.getY() << "), "
             << std::setprecision(2) << getArea() << "]";
 }

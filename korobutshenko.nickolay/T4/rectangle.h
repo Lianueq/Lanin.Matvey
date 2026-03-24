@@ -3,7 +3,7 @@
 
 #include "shape.h"
 
-class Rectangle : public Shape 
+class Rectangle : public Shape
 {
   public:
 
@@ -15,7 +15,7 @@ class Rectangle : public Shape
     void scale(double) override;
     std::string getName() const override;
 
-    void getBoundingBox(double& minX, double& minY,  
+    void getBoundingBox(double& minX, double& minY,
                         double& maxX, double& maxY) const override;
 
     void print() const override;

@@ -10,7 +10,7 @@ Rectangle::Rectangle(const Point& leftBottom, const Point& rightTop_) :
   }
 }
 
-double Rectangle::getArea() const 
+double Rectangle::getArea() const
 {
   double width = rightTop_.getX() - leftBottom_.getX();
   double height = rightTop_.getY() - leftBottom_.getY();
@@ -70,7 +70,7 @@ void Rectangle::print() const
 {
   Point center = getCenter();
   std::cout << "[" << getName() << ", ("  
-            << std::fixed << std::setprecision(2) << center.getX()  
-            << ", " << std::setprecision(2) << center.getY() << "), "  
+            << std::fixed << std::setprecision(2) << center.getX()
+            << ", " << std::setprecision(2) << center.getY() << "), "
             << std::setprecision(2) << getArea() << "]";
 }
