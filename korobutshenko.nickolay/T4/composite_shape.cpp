@@ -28,7 +28,7 @@ double CompositeShape::getArea() const
   return totalArea;
 }
 
-void CompositeShape::getBoundingBox(double& minX, double& minY,  
+void CompositeShape::getBoundingBox(double& minX, double& minY,
                                     double& maxX, double& maxY) const
 {
   bool isFirst = 1;
