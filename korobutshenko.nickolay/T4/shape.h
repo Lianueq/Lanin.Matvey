@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-#include "Point.h"
+#include "point.h"
 
 class Shape
 {
