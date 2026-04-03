@@ -1,52 +1,44 @@
 #include "rectangle.h"
-#include <iostream>
 #include <stdexcept>
 
-Rectangle::Rectangle(const Point &BottomLeft_, const Point &TopRight_)
-  : BottomLeft(BottomLeft_), TopRight(TopRight_)
+Rectangle::Rectangle(const Point& bottomLeft_, const Point& topRight_)
+    : bottomLeft(bottomLeft_), topRight(topRight_)
 {
-  if (BottomLeft.x >= TopRight.x || BottomLeft.y >= TopRight.y)
-  {
-    throw std::invalid_argument(
-      "ERROR: The coordinates of the rectangle were entered incorrectly!!!");
-  }
+    if (bottomLeft.x >= topRight.x || bottomLeft.y >= topRight.y)
+        throw std::invalid_argument("Invalid rectangle coordinates");
 }
 
 double Rectangle::getArea() const
 {
-  return (TopRight.x - BottomLeft.x) * (TopRight.y - BottomLeft.y);
+    return (topRight.x - bottomLeft.x) * (topRight.y - bottomLeft.y);
 }
 
 Point Rectangle::getCenter() const
 {
-  double centerX = (TopRight.x + BottomLeft.x) / 2.0;
-  double centerY = (TopRight.y + BottomLeft.y) / 2.0;
-  return Point(centerX, centerY);
+    return Point((bottomLeft.x + topRight.x) / 2.0,
+                 (bottomLeft.y + topRight.y) / 2.0);
 }
 
 void Rectangle::move(double dx, double dy)
 {
-  BottomLeft.x += dx;
-  BottomLeft.y += dy;
-  TopRight.x += dx;
-  TopRight.y += dy;
+    bottomLeft.x += dx;
+    bottomLeft.y += dy;
+    topRight.x += dx;
+    topRight.y += dy;
 }
 
-void Rectangle::scale(double kef)
+void Rectangle::scale(double factor)
 {
-  if (kef <= 0)
-  {
-    throw std::invalid_argument("Scale kef must be positive!!!");
-  }
-  Point center = getCenter();
-
-  BottomLeft.x = center.x + (BottomLeft.x - center.x) * kef;
-  BottomLeft.y = center.y + (BottomLeft.y - center.y) * kef;
-  TopRight.x = center.x + (TopRight.x - center.x) * kef;
-  TopRight.y = center.y + (TopRight.y - center.y) * kef;
+    if (factor <= 0)
+        throw std::invalid_argument("Scale factor must be positive");
+    Point center = getCenter();
+    bottomLeft.x = center.x + (bottomLeft.x - center.x) * factor;
+    bottomLeft.y = center.y + (bottomLeft.y - center.y) * factor;
+    topRight.x = center.x + (topRight.x - center.x) * factor;
+    topRight.y = center.y + (topRight.y - center.y) * factor;
 }
 
 std::string Rectangle::getName() const
 {
-  return "RECTANGLE";
+    return "RECTANGLE";
 }
