@@ -3,28 +3,31 @@
 #include <string>
 #include <algorithm>
 #include <iterator>
-#include <sstream>
 #include <cctype>
 
 struct DataStruct {
-    unsigned long long key1;
-    unsigned long long key2;
+    unsigned long long key1 = 0;
+    unsigned long long key2 = 0;
     std::string key3;
 };
 
+namespace {
+
+bool isDigitChar(char c) {
+    return c >= '0' && c <= '9';
+}
+
 bool parseUllLit(const std::string& s, unsigned long long& value) {
-    if (s.empty()) return false;
-    size_t len = s.length();
-    if (len < 3) return false;
-    std::string suffix = s.substr(len - 3);
+    if (s.size() < 4) return false;
+    std::string suffix = s.substr(s.size() - 3);
     if (suffix != "ull" && suffix != "ULL") return false;
-    std::string numStr = s.substr(0, len - 3);
+    std::string numStr = s.substr(0, s.size() - 3);
     if (numStr.empty()) return false;
     for (char c : numStr) {
-        if (!std::isdigit(static_cast<unsigned char>(c))) return false;
+        if (!isDigitChar(c)) return false;
     }
     try {
-        size_t pos;
+        size_t pos = 0;
         unsigned long long val = std::stoull(numStr, &pos);
         if (pos != numStr.length()) return false;
         value = val;
@@ -35,32 +38,50 @@ bool parseUllLit(const std::string& s, unsigned long long& value) {
 }
 
 bool parseUllBin(const std::string& s, unsigned long long& value) {
-    if (s.empty()) return false;
-    if (s.length() < 3) return false;
-    if (!(s[0] == '0' && (s[1] == 'b' || s[1] == 'B'))) return false;
+    if (s.size() < 3) return false;
+    if (s[0] != '0') return false;
+    if (s[1] != 'b' && s[1] != 'B') return false;
     std::string binStr = s.substr(2);
     if (binStr.empty()) return false;
     unsigned long long result = 0;
     for (char c : binStr) {
         if (c != '0' && c != '1') return false;
-        result = (result << 1) | (c - '0');
+        if (result > (~0ULL >> 1)) return false;
+        result = (result << 1) | static_cast<unsigned long long>(c - '0');
     }
     value = result;
     return true;
 }
 
+bool splitPair(const std::string& pair, std::string& key, std::string& value) {
+    size_t spacePos = pair.find(' ');
+    if (spacePos == std::string::npos) return false;
+    if (spacePos + 1 >= pair.size()) return false;
+    if (pair[spacePos + 1] == ' ') return false;
+    key = pair.substr(0, spacePos);
+    value = pair.substr(spacePos + 1);
+    if (key.empty()) return false;
+    return true;
+}
+
 bool parseDataStruct(const std::string& line, DataStruct& ds) {
-    size_t start = line.find_first_not_of(" \t");
-    if (start == std::string::npos) return false;
-    size_t end = line.find_last_not_of(" \t");
-    std::string trimmed = line.substr(start, end - start + 1);
-    if (trimmed.empty() || trimmed.front() != '(' || trimmed.back() != ')') return false;
+    size_t start = 0;
+    while (start < line.size() && (line[start] == ' ' || line[start] == '\t')) ++start;
+    size_t end = line.size();
+    while (end > start && (line[end - 1] == ' ' || line[end - 1] == '\t')) --end;
+    if (start >= end) return false;
+
+    std::string trimmed = line.substr(start, end - start);
+    if (trimmed.size() < 2) return false;
+    if (trimmed.front() != '(' || trimmed.back() != ')') return false;
+
     std::string content = trimmed.substr(1, trimmed.size() - 2);
+
     std::vector<std::string> pairs;
     size_t pos = 0;
     while (pos < content.size()) {
         if (content[pos] != ':') return false;
-        pos++;
+        ++pos;
         size_t nextColon = std::string::npos;
         bool inQuotes = false;
         for (size_t i = pos; i < content.size(); ++i) {
@@ -71,6 +92,8 @@ bool parseDataStruct(const std::string& line, DataStruct& ds) {
                 break;
             }
         }
+        if (inQuotes) return false;
+
         std::string pair;
         if (nextColon == std::string::npos) {
             pair = content.substr(pos);
@@ -79,17 +102,18 @@ bool parseDataStruct(const std::string& line, DataStruct& ds) {
             pair = content.substr(pos, nextColon - pos);
             pos = nextColon;
         }
-        if (pair.empty()) continue;
+        if (pair.empty()) return false;
         pairs.push_back(pair);
     }
+
     bool hasKey1 = false, hasKey2 = false, hasKey3 = false;
     unsigned long long k1 = 0, k2 = 0;
     std::string k3;
-    for (const auto& pair : pairs) {
-        size_t spacePos = pair.find(' ');
-        if (spacePos == std::string::npos) return false;
-        std::string key = pair.substr(0, spacePos);
-        std::string value = pair.substr(spacePos + 1);
+
+    for (const std::string& pair : pairs) {
+        std::string key, value;
+        if (!splitPair(pair, key, value)) return false;
+
         if (key == "key1") {
             if (hasKey1) return false;
             if (!parseUllLit(value, k1)) return false;
@@ -100,21 +124,24 @@ bool parseDataStruct(const std::string& line, DataStruct& ds) {
             hasKey2 = true;
         } else if (key == "key3") {
             if (hasKey3) return false;
-            if (value.size() < 2 || value.front() != '"' || value.back() != '"') return false;
+            if (value.size() < 2) return false;
+            if (value.front() != '"' || value.back() != '"') return false;
             k3 = value.substr(1, value.size() - 2);
             hasKey3 = true;
         } else {
             return false;
         }
     }
-    if (hasKey1 && hasKey2 && hasKey3) {
-        ds.key1 = k1;
-        ds.key2 = k2;
-        ds.key3 = k3;
-        return true;
-    }
-    return false;
+
+    if (!hasKey1 || !hasKey2 || !hasKey3) return false;
+
+    ds.key1 = k1;
+    ds.key2 = k2;
+    ds.key3 = k3;
+    return true;
 }
+
+} // namespace
 
 std::istream& operator>>(std::istream& in, DataStruct& ds) {
     std::string line;
@@ -128,7 +155,7 @@ std::istream& operator>>(std::istream& in, DataStruct& ds) {
 }
 
 std::ostream& operator<<(std::ostream& out, const DataStruct& ds) {
-    out << "(:key1 " << ds.key1 << "ull" << ":key2 0b";
+    out << "(:key1 " << ds.key1 << "ull:key2 0b";
     if (ds.key2 == 0) {
         out << "0";
     } else {
