@@ -61,7 +61,16 @@ bool parseDataStruct(const std::string& line, DataStruct& ds) {
     while (pos < content.size()) {
         if (content[pos] != ':') return false;
         pos++;
-        size_t nextColon = content.find(':', pos);
+        size_t nextColon = std::string::npos;
+        bool inQuotes = false;
+        for (size_t i = pos; i < content.size(); ++i) {
+            if (content[i] == '"') {
+                inQuotes = !inQuotes;
+            } else if (content[i] == ':' && !inQuotes) {
+                nextColon = i;
+                break;
+            }
+        }
         std::string pair;
         if (nextColon == std::string::npos) {
             pair = content.substr(pos);
