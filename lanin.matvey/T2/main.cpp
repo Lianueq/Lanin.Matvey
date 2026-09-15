@@ -102,7 +102,7 @@ bool parseDataStruct(const std::string& line, DataStruct& ds) {
             pair = content.substr(pos, nextColon - pos);
             pos = nextColon;
         }
-        if (pair.empty()) return false;
+        if (pair.empty()) continue;
         pairs.push_back(pair);
     }
 
