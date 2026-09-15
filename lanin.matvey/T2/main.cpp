@@ -54,14 +54,14 @@ bool parseDataStruct(const std::string& line, DataStruct& ds) {
     if (start == std::string::npos) return false;
     size_t end = line.find_last_not_of(" \t");
     std::string trimmed = line.substr(start, end - start + 1);
-    if (trimmed.empty() || trimmed.front() != '(' || trimmed.back() != ')\) return false;
+    if (trimmed.empty() || trimmed.front() != '(' || trimmed.back() != ')') return false;
     std::string content = trimmed.substr(1, trimmed.size() - 2);
     std::vector<std::string> pairs;
     size_t pos = 0;
     while (pos < content.size()) {
-        if (content[pos] != ':\) return false;
+        if (content[pos] != ':') return false;
         pos++;
-        size_t nextColon = content.find(':\, pos);
+        size_t nextColon = content.find(':', pos);
         std::string pair;
         if (nextColon == std::string::npos) {
             pair = content.substr(pos);
@@ -91,7 +91,7 @@ bool parseDataStruct(const std::string& line, DataStruct& ds) {
             hasKey2 = true;
         } else if (key == "key3") {
             if (hasKey3) return false;
-            if (value.size() < 2 || value.front() != '\"\ || value.back() != '\"\) return false;
+            if (value.size() < 2 || value.front() != '"' || value.back() != '"') return false;
             k3 = value.substr(1, value.size() - 2);
             hasKey3 = true;
         } else {
